@@ -21,7 +21,6 @@ export default function Heatmap() {
     if (map.current) return; // prevent reinitialization
     maptilersdk.config.apiKey = MAPTILER_KEY;
 
-    // initialize the map
     map.current = new maptilersdk.Map({
       container: mapContainer.current,
       style: maptilersdk.MapStyle.STREETS,
@@ -29,27 +28,17 @@ export default function Heatmap() {
       zoom: 13,
     });
 
-    // create GeoJSON from sensors
     const geojson = {
       type: "FeatureCollection",
       features: sensors.map((s) => ({
         type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [s.lng, s.lat],
-        },
-        properties: {
-          intensity: s.intensity,
-        },
+        geometry: { type: "Point", coordinates: [s.lng, s.lat] },
+        properties: { intensity: s.intensity },
       })),
     };
 
-    // add source and heatmap layer
     map.current.on("load", () => {
-      map.current.addSource("heatmap-source", {
-        type: "geojson",
-        data: geojson,
-      });
+      map.current.addSource("heatmap-source", { type: "geojson", data: geojson });
 
       map.current.addLayer({
         id: "heatmap-layer",
@@ -80,10 +69,13 @@ export default function Heatmap() {
     <div
       ref={mapContainer}
       style={{
-        height: "80vh",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         width: "100%",
-        borderRadius: "12px",
-        overflow: "hidden",
+        height: "100%",
       }}
     />
   );
