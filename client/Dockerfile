@@ -12,6 +12,7 @@ COPY . .
 RUN npm run build
 # Copy built files from previous stage
 RUN npm install -g serve
+RUN npm install -g serve
 
 EXPOSE 3000
 
